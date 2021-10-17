@@ -1,0 +1,70 @@
+{% extends 'clinic/base.html' %}
+{% block title %}{{ Appointment }}{% endblock title %}
+{% block appointments_active %}active{% endblock appointments_active %}
+
+{% block body %}
+	<div class="container-fluid consultations-container">
+		<div class="row">
+			<!-- Appointment Info Left -->
+			<div class="col-sm-4 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<a href="">
+							<!-- Clinic/Hospital Logo/Image -->
+							<img src="#">
+						</a>
+						<h1>{{ appointment.doctor }}<small>{{ appointment.is_doctor }}</small></h1>
+						<h2>{{ appointment.patient_name }}</h2>
+					</div>
+				</div>
+			</div>
+
+			<!-- Consultation Info Right -->
+			<div class="col-sm-8 col-md-9">
+				<ul class="nav nav-pills" style="margin-bottom: 10px;">
+					<li role="presentation" class="active"><a href="{% url 'clinic:detail' appointment.id %}">View All</a></li>
+					<li role="presentation"><a href="{% url 'clinic:create_consultation' appointment.id %}">Add New Consultations</a></li>
+				</ul>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3>All Consultations</h3>
+						{% if error_message %}
+                        	<p><strong>{{error_message}}</strong></p>
+                        {% endif %}
+
+                        <table class="table">
+                        	<thead>
+                        		<tr>
+                        			<th>Time</th>
+                        			<th>Date</th>
+                        			<th>File Number</th>
+                        		</tr>
+                        	</thead>
+                        	<tbody>
+                        		{% for consultation in appointment.consultation_set.all %}
+                                    <tr>
+                                    	<td>{{ appointment.time }}</td>
+                                    	<td>{{ appointment.date }}</td>
+                                    	<td>{{ appointment.file_number }}</td>
+                                    	<td>
+                                    		<a href="{% url 'clinic:isdoctor' consultation.id %}" class="btn-favorite"><span class="{% if consultation.isdoctor %}active{% endif %}"><i class="far fa-heart"></i></span></a>
+                                    	</td>
+                                        <td>
+                                        	<form action="" method="POST" style="display: inline;">
+                                                {% csrf_token %}
+                                        		<input type="hidden" name="consultation_id" value="{{ consultation.id }}">
+                                        		<button type="submit" class="btn btn-outline-danger btn-xs">
+                                        			<span><i class="far fa-trash-alt"></i> Delete</span>
+                                        		</button>
+                                        	</form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                        	</tbody>
+                        </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock body %}

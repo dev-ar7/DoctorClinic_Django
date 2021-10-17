@@ -1,0 +1,48 @@
+{% extends 'clinic/base.html' %}
+{% block title %}Add New Consultation{% endblock title %}
+{% block appointment_active %}active{% endblock appointment_active %}
+
+{% block body %}
+<div class="container-fluid">
+	<div class="row">
+		<!-- Appointment Info Left -->
+		<div class="col-sm-4 col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<a href="{% url 'clinic:detail' appointment.id %}">
+						<!-- Clinic Logo Or Hospital Image -->
+						<img class="img-responsive" src="#"></img>
+					</a>
+					<h1>{{ appointment.doctor }} <small>{{ appointment.is_doctor }}</small></h1>
+					<h2>{{ appointment.patient_name }}</h2>
+				</div>
+			</div>
+		</div>
+		<!-- Consultation Info Right -->
+		<div class="col-sm-8 col-md-9">
+			<ul class="nav nav-pills" style="margin-bottom: 10px;">
+				<li role="presentation"><a href="{% url 'clinic:detail' appointment.id %}">View All</a></li>
+				<li role="presentation" class="active"><a href="{% url 'clinic:create_consultation' appointment.id %}">Add New Consultation</a></li>
+			</ul>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h3>Add New Consultations</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="" method="POST" enctype="multipart/form-data">
+                    	{% csrf_token %}
+                        <input type="hidden" name="appointment" value="{{ appointment }}">
+                        {% include 'clinic/form-template.html' %}
+                        <div class="form-group">
+                        	<div class="col-sm-offset col-sm-10">
+                        		<button type="submit" class="btn btn-outline-success">Submit</button>
+                        	</div>
+                        </div>
+                    </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}

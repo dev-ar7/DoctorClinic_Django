@@ -1,0 +1,90 @@
+{% extends 'clinic/base.html' %}
+{% block title %}All Appointments{% endblock title %}
+{% block appointments_active %}active{% endblock appointments_active %}
+
+{% block body %}
+    <div class="appointments-container container-fluid">
+    	<!-- Appointments -->
+    	<div class="row">
+    		<div class="col-sm-12">
+    			<h3>Welcome {{user.username}}, Here Are The Appointments For Today.</h3>
+    		</div>
+
+    		{% if appointments %}
+                {% for appointment in appointments %}
+                    <div class="col-sm-4 col-lg-2">
+                    	<div class="thumbnail">
+                    		<a href="{% url 'clinic:detail' appointment.id %}">
+                    			<img src="#">
+                    		</a>
+                    		<div class="caption">
+                    			<h4>{{ appointment.doctor }}</h4>
+
+                    			<!-- View Detail -->
+                    			<a href="{% url 'clinic:detail' appointment.id %}" class="btn btn-outline-success btn-sm" role="button">View Details</a>
+
+                    			<!-- Delete Appointment -->
+                    			<form action="{% url 'clinic:appointment_delete' appointment.id %}" method="POST" style="display: inline;">
+
+                    				<input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                    				<button type="submit" class="btn btn-outline-danger btn-sm">
+                    					<span><i class="far fa-trash-alt"></i> Delete</span>
+                    				</button>
+                    			</form>
+                    		</div>
+                    	</div>
+                    </div>
+                    {% cycle '' '' '' '' '' '<div class="clearfix visibe-lg"></div>' %}
+                {% endfor %}
+                {% else %}
+                	<div class="col-sm-12">
+                		<br>
+                		<a href="{% url 'clinic:create_appointment' %}">
+                			<button type="button" class="btn btn-outline-success">
+                				<span><i class="fas fa-plus"></i> Add An Appointment</span>
+                			</button>
+                		</a>
+                	</div>
+            {% endif %}
+    	</div>
+
+    	<!-- User Searches And There Are Appointment -->
+    	{% if consultations %}
+            <div class="row">
+            	<div class="col-sm-12">
+            		<h3>Consultation</h3>
+            	</div>
+            	<div class="col-sm-12">
+            		<div class="panel panel-default">
+            			<div class="panel-body">
+            				<table class="table">
+            					<thead>
+            						<tr>
+            							<th>Consultation Number</th>
+            							<th>Doctor</th>
+            							<th>Patient Name</th>
+            							<th>File Number</th>
+            							<th>Regular Doctor?</th>
+            						</tr>
+            					</thead>
+            					<tbody>
+            						{% for consultation in consultations %}
+                                        <tr>
+                                        	<td>{{ consultation.consultation_number }}</td>
+                                        	<td>{{ consultation.appointment.doctor }}</td>
+                                        	<td>{{ consultation.patient_name }}</td>
+                                        	<td>{{ consultation.file_number }}</td>
+                                        	<td>
+                                        		<a href="{% url 'clinic:isdoctor' consultation.id %}" class="btn-isdoctor"><span class="{% if consultation.is_doctor %}active{% endif %}"><i class="far fa-heart"></i></span></a>
+                                        	</td>
+                                        </tr>
+                                    {% endfor %}
+            					</tbody>
+            				</table>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock body %}

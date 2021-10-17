@@ -1,0 +1,47 @@
+{% extends 'clinic/base.html' %}
+{% block title %}{% endblock title %}
+{% block consultations_active %}active{% endblock consultations_active %}
+
+{% block body %}
+	<div class="container-fluid consultations-container">
+		<div class="row">
+			<div class="col-sm-12">
+				<ul class="nav nav-pills" style="margin-bottom: 12px;">
+					<li role="presentation"{% if filter_by == all %}class="active"{% endif %}><a href="{% url 'clinic:consultations' 'all' %}">View All</a></li>
+					<li role="presentation"{% if filter_by == doctor %}class="active"{% endif %}><a href="{% url 'clinic:consultations' 'doctor' %}">Regular Doctor</a></li>
+				</ul>
+			</div>
+		</div>
+        <div class="row">
+        	<div class="col-sm-12">
+        		<div class="panel panel-default">
+        			<div class="panel-body">
+        				<table class="table">
+        					<thead>
+        						<tr>
+        							<th>Consultation_number</th>
+        							<th>Doctor</th>
+        							<th>Patient_name</th>
+        							<th>File Number</th>
+        							<th>Regular Doctor?</th>
+        						</tr>
+        					</thead>
+        					<tbody>
+        						{% for consultation in consultation_list %}
+                                	<tr>
+                                		<td>{{ consultation.consultation_number }}</td>
+                                		<td>{{ consultation.doctor }}</td>
+                                		<td>{{ consultation.patient_name }}</td>
+                                		<td>{{ consultation.is_doctor }}</td>
+                                		<td>{{ consultation.appointment.doctor }}</td>
+                                		<a href="{% url 'clinic:isdoctor' %}" class="btn-favorite"><span class="{% if consultation.isdoctor %}active{% endif %}"><i class="far fa-heart"></i></span></a>
+                                	</tr>
+                                {% endfor %}
+        					</tbody>
+        				</table>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+	</div>
+{% endblock body %}

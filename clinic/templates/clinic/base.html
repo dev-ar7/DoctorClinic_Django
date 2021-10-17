@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Doctor Clinic{% endblock title %}</title>
+	<!-- Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+	<!-- Font Awesome -->
+	<script src="https://kit.fontawesome.com/726bcff876.js" crossorigin="anonymous"></script>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'clinic/style/css' %}">
+	<!-- Custom Js -->
+	<script type="text/javascript" src="{% static 'clinic/main.js' %}"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Header -->
+			<div class="navbar-header">
+				<button class="navbar-toogle" type="button" data-toggle="collapse" data-target="#topNavbar">
+					<span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="{% url 'clinic:index' %}">Doctor Clinic</a>
+			</div>
+
+			<!-- Items -->
+			<div class="collapse navbar-collapse" id="topNavbar">
+				<ul class="nav navbar-nav">
+					<li class="{% block appointments_active %}{% endblock %}"><a href="{% url 'clinic:index' %}"><span><i class="far fa-calendar-check"></i></span> Appointments</a></li>
+					<li class="{% block consultations_active %}{% endblock %}"><a href="{% url 'clinic:consultations' 'all' %}"><span><i class="fas fa-phone"></i></span> Consultations</a></li>
+				</ul>
+				<form class="navbar-form navbar-left" role="search" method="GET" action="{% url 'clinic:index' %}">
+                {% csrf_token %}
+					<div class="form-group">
+						<input class="form-control" type="text" name="q" value="{{ request.GET.q }}"></input>
+					</div>
+					<button class="btn btn-outline-success">Search</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="{% url 'clinic:create_appointment' %}">
+							<span><i class="fas fa-plus"></i></span> Add Appointment
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'clinic:logout_user' %}">
+							<span><i class="fas fa-sign-out-alt"></i></span> LogOut
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+    {% block body %}
+    
+    {% endblock body %}
+</body>
+</html>

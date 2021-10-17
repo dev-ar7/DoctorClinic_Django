@@ -1,0 +1,39 @@
+{% extends 'clinic/base.html' %}
+{% block title %}{% endblock title %}
+{% block appointment_active %}active{% endblock appointment_active %}
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12 col-md-7">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3>Add New Appointments</h3>
+                        {% if error_message %}
+                        	<p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+                        <form class="form-horizontal" role="form" action="" method="POST" enctype="multipart/form-data">
+                        	{% csrf_token %}
+                            {% include 'clinic/form-template.html' %}
+                            <div class="form-group">
+                            	<div class="col-sm-offset-2 col-sm-10">
+                            		<button type="submit" class="btn btn-outline-success">Submit</button>
+                            	</div>
+                            </div>
+                        </form>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-5">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3>What Is DoctorClinic?</h3>
+						<p>It's An WebApp That Allows Receptionist To Book An Appoinment For Old And New Patients.</p>
+						<h3>How Do I Add An Appointment?</h3>
+						<p>First, Create A New Appointment By Filling out The Form On This Page. Once The Appointment Is Created You Will Be Able To Add A Doctor's Consultation.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock body %}
